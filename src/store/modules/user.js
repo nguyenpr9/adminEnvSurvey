@@ -60,6 +60,9 @@ const actions = {
 
 const mutations = {
   updateField,
+  RESETUSER(state) {
+    state.user = new User();
+  },
   updateUsers(state, payload) {
     state.data[payload.index][payload.item] = payload.value ? 1 : 0;
   },

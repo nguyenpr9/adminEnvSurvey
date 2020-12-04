@@ -25,6 +25,8 @@
       :items="items"
       :loading="loading"
       :page.sync="page"
+      :sort-by="['status', 'id']"
+      :sort-desc="[true, true]"
       :items-per-page="itemsPerPage"
       @pagination="itemsLength = $event.itemsLength"
       class="elevation-1"
@@ -33,13 +35,9 @@
       no-results-text="Không có kết quả"
     >
       <template v-slot:item.status="{ item }">
-        <toggle-button
-          id="changed-font"
-          :speed="480"
-          readonly
-          :sync="true"
-          :value="item.status === 1"
-        />
+        <v-chip :color="item.status ? 'green' : 'red'" dark>
+          {{ item.status ? "Active" : "Block" }}
+        </v-chip>
       </template>
       <template v-slot:item.actions="{ item }">
         <v-icon small @click="deleteItem(item)">
@@ -79,7 +77,6 @@
 </template>
 
 <script>
-import { ToggleButton } from "vue-js-toggle-button";
 import { createNamespacedHelpers } from "vuex";
 import PageTitle from "../../Layout/Components/PageTitle.vue";
 import store from "../../store";
@@ -91,8 +88,7 @@ if (!store.state.faq) store.registerModule(`faq`, faq);
 export default {
   name: "Faq",
   components: {
-    PageTitle,
-    ToggleButton
+    PageTitle
   },
   data: function() {
     return {

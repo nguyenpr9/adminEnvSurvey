@@ -8,13 +8,14 @@
     <h1></h1>
     <p v-if="error" class="text-center error">{{ error }}</p>
     <template>
-      <ValidationObserver ref="obs" v-slot="{ validated, invalid }">
+      <ValidationObserver ref="obs">
         <v-card>
           <v-card-text>
             <v-container>
               <v-row>
                 <v-col cols="12">
                   <ValidationProvider
+                    mode="lazy"
                     name="UserName"
                     rules="required|max:255"
                     v-slot="{ errors, valid }"
@@ -31,6 +32,7 @@
                 </v-col>
                 <v-col cols="12">
                   <ValidationProvider
+                    mode="lazy"
                     name="email"
                     rules="required|email"
                     v-slot="{ errors, valid }"
@@ -46,6 +48,7 @@
                 </v-col>
                 <v-col cols="12">
                   <ValidationProvider
+                    mode="lazy"
                     name="Name"
                     rules="required|max:255"
                     v-slot="{ errors, valid }"
@@ -71,10 +74,10 @@
             <v-btn
               color="blue darken-1"
               text
-              @click="create"
-              :disabled="invalid || !validated"
-              >Sign Up</v-btn
+              @click.prevent="submitForm(create)"
             >
+              Create
+            </v-btn>
           </v-card-actions>
         </v-card>
       </ValidationObserver>
@@ -89,7 +92,7 @@ import { CREATE } from "../../../store/action-types";
 import store from "../../../store";
 import { user, mapUserField } from "../../../store/modules/user";
 if (!store.state.user) store.registerModule(`user`, user);
-const { mapActions, mapState } = createNamespacedHelpers(`user`);
+const { mapActions, mapState, mapMutations } = createNamespacedHelpers(`user`);
 export default {
   name: "PageCreatePost",
   data() {
@@ -106,7 +109,11 @@ export default {
   methods: {
     ...mapActions({
       create: CREATE
-    })
+    }),
+    ...mapMutations(["RESETUSER"])
+  },
+  created() {
+    this.RESETUSER();
   },
   computed: {
     ...mapState([`error`, `success`]),

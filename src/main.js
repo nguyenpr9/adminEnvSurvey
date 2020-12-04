@@ -16,6 +16,27 @@ Vue.prototype.$axios = Axios;
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;
 
+Vue.mixin({
+  methods: {
+    submitForm(fn) {
+      let observer = this.$refs.obs;
+      observer.validate().then(success => {
+        if (!success) {
+          const errors = Object.entries(observer.errors)
+            .map(([key, value]) => ({ key, value }))
+            .filter(error => error["value"].length);
+          observer.refs[errors[0]["key"]].$el.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+          return;
+        }
+        fn();
+      });
+    }
+  }
+});
+
 new Vue({
   router,
   store,

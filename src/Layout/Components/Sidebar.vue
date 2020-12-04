@@ -45,15 +45,15 @@ export default {
       menu: [
         {
           header: true,
-          title: "AVENGER"
+          title: "ENVSURVEY"
         },
         {
-          title: "Dashboards",
+          title: "General",
           icon: "pe-7s-rocket",
           child: [
             {
               href: "/",
-              title: "Trang chủ"
+              title: "HomePage"
             },
             {
               href: "/user",

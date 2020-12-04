@@ -8,7 +8,7 @@
     <h1></h1>
     <p v-if="error" class="text-center error">{{ error }}</p>
     <template>
-      <ValidationObserver ref="obs" v-slot="{ validated, invalid }">
+      <ValidationObserver ref="obs">
         <v-card>
           <v-card-text>
             <v-container>
@@ -54,10 +54,10 @@
             <v-btn
               color="blue darken-1"
               text
-              @click="update"
-              :disabled="invalid || !validated"
-              >Save</v-btn
+              @click.prevent="submitForm(update)"
             >
+              Save
+            </v-btn>
           </v-card-actions>
         </v-card>
       </ValidationObserver>

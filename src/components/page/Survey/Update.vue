@@ -8,13 +8,14 @@
     <h1></h1>
     <p v-if="error" class="text-center error">{{ error }}</p>
     <template>
-      <ValidationObserver v-slot="{ handleSubmit }">
+      <ValidationObserver ref="obs">
         <v-card>
           <v-card-text>
             <v-container>
               <v-row>
                 <v-col cols="12">
                   <ValidationProvider
+                    mode="lazy"
                     name="Title"
                     rules="required"
                     v-slot="{ errors, valid }"
@@ -28,6 +29,7 @@
                 </v-col>
                 <v-col cols="12">
                   <ValidationProvider
+                    mode="lazy"
                     name="Description"
                     rules="required"
                     v-slot="{ errors, valid }"
@@ -52,6 +54,7 @@
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <ValidationProvider
+                        mode="lazy"
                         name="StartDate"
                         rules="required"
                         v-slot="{ errors, valid }"
@@ -89,6 +92,7 @@
                   >
                     <template v-slot:activator="{ on, attrs }">
                       <ValidationProvider
+                        mode="lazy"
                         name="EndDate"
                         rules="required"
                         v-slot="{ errors, valid }"
@@ -125,8 +129,13 @@
                   </v-col>
                   <v-col cols="12">
                     <ValidationProvider
+                      mode="lazy"
                       :name="`${index}_questionNumber`"
-                      rules="required|integer|min_value:1"
+                      :rules="
+                        `required|integer|unique:${surveyQs.map(i => {
+                          return i.number;
+                        })}|min_value:0`
+                      "
                       v-slot="{ errors, valid }"
                     >
                       <v-text-field
@@ -139,6 +148,7 @@
                   </v-col>
                   <v-col cols="12">
                     <ValidationProvider
+                      mode="lazy"
                       :name="`${index}_questionQuestion`"
                       rules="required"
                       v-slot="{ errors, valid }"
@@ -153,6 +163,7 @@
                   </v-col>
                   <v-col cols="12">
                     <ValidationProvider
+                      mode="lazy"
                       :name="`${index}_questionAnswer`"
                       rules="required|integer"
                       v-slot="{ errors, valid }"
@@ -164,7 +175,6 @@
                             return i.value;
                           })
                         "
-                        item-text="title"
                         item-value="value"
                         label="Answer"
                         :error-messages="errors"
@@ -191,6 +201,7 @@
                     </v-col>
                     <v-col cols="12">
                       <ValidationProvider
+                        mode="lazy"
                         :name="`${index}_optionTitle_${index1}`"
                         rules="required"
                         v-slot="{ errors, valid }"
@@ -214,8 +225,13 @@
                     </v-col>
                     <v-col cols="12">
                       <ValidationProvider
+                        mode="lazy"
                         :name="`${index}_optionValue_${index1}`"
-                        rules="required|integer|min_value:1"
+                        :rules="
+                          `required|integer|unique:${question.options.map(i => {
+                            return i.value;
+                          })}|min_value:0`
+                        "
                         v-slot="{ errors, valid }"
                       >
                         <v-text-field
@@ -259,7 +275,7 @@
             <v-btn
               color="blue darken-1"
               text
-              @click.prevent="handleSubmit(update)"
+              @click.prevent="submitForm(update)"
             >
               Save
             </v-btn>
@@ -314,8 +330,8 @@ export default {
   },
   async created() {
     await this.one(this.$route.params.id);
-    this.endDate = moment(this.enDate).format('YYYY-MM-DD');
-    this.startDate = moment(this.startDate).format('YYYY-MM-DD');
+    this.endDate = moment(this.enDate).format("YYYY-MM-DD");
+    this.startDate = moment(this.startDate).format("YYYY-MM-DD");
   },
   components: {
     PageTitle
@@ -347,6 +363,7 @@ export default {
     ]),
     ...mapSurveyQsMultiRowFields({ surveyQs: `rows` })
   },
+  mounted() {},
   watch: {
     startDateTmp(val) {
       this.startDate = this.formatDate(val);
