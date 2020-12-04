@@ -6,14 +6,14 @@ module.exports = {
       return args;
     });
   },
-  devServer: {
-    proxy: {
-      "/api": {
-        target: "http://45.77.250.236:5000",
-        ws: true,
-        changeOrigin: true
-      }
-    }
-  },
+  // devServer: {
+  //   proxy: {
+  //     "/api": {
+  //       target: "http://45.77.250.236:5000",
+  //       ws: true,
+  //       changeOrigin: true
+  //     }
+  //   }
+  // },
   runtimeCompiler: true
 };
