@@ -7,6 +7,11 @@ import vuetify from "./plugins/vuetify";
 import BootstrapVue from "bootstrap-vue";
 import "./assets/scss/app.scss";
 import "../node_modules/nprogress/nprogress.css";
+import "./vee-validate";
+import { ValidationObserver, ValidationProvider } from "vee-validate";
+Vue.component("ValidationObserver", ValidationObserver);
+Vue.component("ValidationProvider", ValidationProvider);
+
 Vue.prototype.$axios = Axios;
 Vue.use(BootstrapVue);
 Vue.config.productionTip = false;

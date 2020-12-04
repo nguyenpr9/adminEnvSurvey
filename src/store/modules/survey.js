@@ -43,6 +43,7 @@ const actions = {
       },
       { surveyQs: state.surveyQs.rows }
     );
+    console.log(surveyData);
     let response = await SurveyRepository.create(surveyData);
     if (response.status === true) {
       await router.push("/survey");
@@ -107,6 +108,10 @@ export const { mapFields: mapSurveyField } = createHelpers({
 export const { mapMultiRowFields: mapSurveyQsMultiRowFields } = createHelpers({
   getterType: `survey/surveyQs/getField`,
   mutationType: `survey/surveyQs/updateField`
+});
+export const { mapMultiRowFields: mapSurveyQsOpMultiRowFields } = createHelpers({
+  getterType: `survey/surveyQsOp/getField`,
+  mutationType: `survey/surveyQsOp/updateField`
 });
 
 const getters = {

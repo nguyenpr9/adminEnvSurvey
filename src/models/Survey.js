@@ -1,11 +1,14 @@
+import moment from "moment";
 import { createSurveyQuestion } from "./SurveyQuestion";
 export class Survey {
   constructor({
     title = ``,
     description = ``,
     userId = ``,
-    startDate = ``,
-    endDate = ``,
+    startDate = moment().format("YYYY-MM-DD"),
+    endDate = moment()
+      .add(2, "years")
+      .format("YYYY-MM-DD"),
     questions = ``
   } = {}) {
     this.title = title;

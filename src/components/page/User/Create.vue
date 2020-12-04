@@ -8,38 +8,76 @@
     <h1></h1>
     <p v-if="error" class="text-center error">{{ error }}</p>
     <template>
-      <v-card>
-        <v-card-title>
-          <span class="headline">{{ formTitle }}</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="username"
-                  label="Username"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field v-model="email" label="Email"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field v-model="name" label="Full name"></v-text-field>
-              </v-col>
-            </v-row>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text to="/user">
-            Back
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="create">
-            Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+      <ValidationObserver ref="obs" v-slot="{ validated, invalid }">
+        <v-card>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <ValidationProvider
+                    name="UserName"
+                    rules="required|max:255"
+                    v-slot="{ errors, valid }"
+                  >
+                    <v-text-field
+                      v-model="username"
+                      :counter="255"
+                      :error-messages="errors"
+                      :success="valid"
+                      label="Username"
+                      required
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12">
+                  <ValidationProvider
+                    name="email"
+                    rules="required|email"
+                    v-slot="{ errors, valid }"
+                  >
+                    <v-text-field
+                      v-model="email"
+                      :error-messages="errors"
+                      :success="valid"
+                      label="E-mail"
+                      required
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12">
+                  <ValidationProvider
+                    name="Name"
+                    rules="required|max:255"
+                    v-slot="{ errors, valid }"
+                  >
+                    <v-text-field
+                      v-model="name"
+                      :counter="255"
+                      :error-messages="errors"
+                      :success="valid"
+                      label="Full name"
+                      required
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+              </v-row>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text to="/user">
+              Back
+            </v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="create"
+              :disabled="invalid || !validated"
+              >Sign Up</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </ValidationObserver>
     </template>
   </div>
 </template>

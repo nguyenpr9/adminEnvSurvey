@@ -8,184 +8,263 @@
     <h1></h1>
     <p v-if="error" class="text-center error">{{ error }}</p>
     <template>
-      <v-card>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12">
-                <v-text-field v-model="title" label="Title"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  v-model="description"
-                  label="Description"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-menu
-                  ref="menu1"
-                  v-model="menu1"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
+      <ValidationObserver v-slot="{ handleSubmit }">
+        <v-card>
+          <v-card-text>
+            <v-container>
+              <v-row>
+                <v-col cols="12">
+                  <ValidationProvider
+                    name="Title"
+                    rules="required"
+                    v-slot="{ errors, valid }"
+                    ><v-text-field
+                      v-model="title"
+                      label="Title"
+                      :error-messages="errors"
+                      :success="valid"
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12">
+                  <ValidationProvider
+                    name="Description"
+                    rules="required"
+                    v-slot="{ errors, valid }"
+                  >
                     <v-text-field
+                      :error-messages="errors"
+                      :success="valid"
+                      v-model="description"
+                      label="Description"
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12">
+                  <v-menu
+                    ref="menu1"
+                    v-model="menu1"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="290px"
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <ValidationProvider
+                        name="StartDate"
+                        rules="required"
+                        v-slot="{ errors, valid }"
+                      >
+                        <v-text-field
+                          v-model="startDate"
+                          label="StartDate"
+                          persistent-hint
+                          readonly
+                          append-icon="mdi-calendar"
+                          v-bind="attrs"
+                          v-on="on"
+                          :error-messages="errors"
+                          :success="valid"
+                        ></v-text-field>
+                      </ValidationProvider>
+                    </template>
+                    <v-date-picker
                       v-model="startDate"
-                      :value="startDate = `2020-12-3`"
-                      label="StartDate"
-                      persistent-hint
-                      readonly
-                      append-icon="mdi-calendar"
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="startDate"
-                    locale="vi-vn"
-                    no-title
-                    @input="menu1 = false"
-                  ></v-date-picker>
-                </v-menu>
-              </v-col>
-              <v-col cols="12">
-                <v-menu
-                  ref="menu2"
-                  v-model="menu2"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  max-width="290px"
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on, attrs }">
-                    <v-text-field
+                      locale="vi-vn"
+                      no-title
+                      @input="menu1 = false"
+                    ></v-date-picker>
+                  </v-menu>
+                </v-col>
+                <v-col cols="12">
+                  <v-menu
+                    ref="menu2"
+                    v-model="menu2"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    max-width="290px"
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <ValidationProvider
+                        name="EndDate"
+                        rules="required"
+                        v-slot="{ errors, valid }"
+                      >
+                        <v-text-field
+                          v-model="endDate"
+                          label="EndDate"
+                          persistent-hint
+                          readonly
+                          append-icon="mdi-calendar"
+                          v-bind="attrs"
+                          v-on="on"
+                          :error-messages="errors"
+                          :success="valid"
+                        ></v-text-field>
+                      </ValidationProvider>
+                    </template>
+                    <v-date-picker
                       v-model="endDate"
-                      :value="endDate = `2022-12-3`"
-                      label="EndDate"
-                      persistent-hint
-                      readonly
-                      append-icon="mdi-calendar"
-                      v-bind="attrs"
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker
-                    v-model="endDate"
-                    locale="vi-vn"
-                    no-title
-                    @input="menu2 = false"
-                  ></v-date-picker>
-                </v-menu>
-              </v-col>
-            </v-row>
-            <div class="ml-4">
-              <v-row v-for="(question, index) in surveyQs" :key="index">
-                <v-col cols="12">
-                  <span class="font-weight-bold"> Quest {{ index }}: </span>
-                  <v-btn color="primary" @click="removeSurveyQs(index)" small>
-                    Remove
-                  </v-btn>
+                      locale="vi-vn"
+                      no-title
+                      @input="menu2 = false"
+                    ></v-date-picker>
+                  </v-menu>
                 </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    v-model.number="question.number"
-                    label="Number"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    v-model="question.question"
-                    label="Question"
-                  ></v-text-field>
-                </v-col>
-                <v-col cols="12">
-                  <v-select
-                    v-model.number="question.answer"
-                    :items="
-                      question.options.map(i => {
-                        return i.value;
-                      })
-                    "
-                    item-text="title"
-                    item-value="value"
-                    label="Answer"
-                  ></v-select>
-                </v-col>
-                <div
-                  class="ml-8"
-                  v-for="(option, index1) in question.options"
-                  :key="index1"
-                >
+              </v-row>
+              <div class="ml-4">
+                <v-row v-for="(question, index) in surveyQs" :key="index">
                   <v-col cols="12">
-                    <span class="font-weight-bold"> Option {{ index1 }}: </span>
-                    <v-btn
-                      color="primary"
-                      @click="removeSurveyQsOp({ index, index1 })"
-                      small
-                    >
+                    <span class="font-weight-bold"> Quest {{ index }}: </span>
+                    <v-btn color="primary" @click="removeSurveyQs(index)" small>
                       Remove
                     </v-btn>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      :value="option.title"
-                      @input="
-                        e =>
-                          updateSurveyQsOp({
-                            title: 'title',
-                            value: e,
-                            qIndex: index,
-                            oIndex: index1
-                          })
-                      "
-                      label="Title"
-                    ></v-text-field>
+                    <ValidationProvider
+                      :name="`${index}_questionNumber`"
+                      rules="required|integer|min_value:1"
+                      v-slot="{ errors, valid }"
+                    >
+                      <v-text-field
+                        :error-messages="errors"
+                        :success="valid"
+                        v-model.number="question.number"
+                        label="Number"
+                      ></v-text-field>
+                    </ValidationProvider>
                   </v-col>
                   <v-col cols="12">
-                    <v-text-field
-                      :value="option.value"
-                      @input="
-                        e =>
-                          updateSurveyQsOp({
-                            title: 'value',
-                            value: Number(e),
-                            qIndex: index,
-                            oIndex: index1
-                          })
-                      "
-                      label="Value"
-                    ></v-text-field>
+                    <ValidationProvider
+                      :name="`${index}_questionQuestion`"
+                      rules="required"
+                      v-slot="{ errors, valid }"
+                    >
+                      <v-text-field
+                        v-model="question.question"
+                        label="Question"
+                        :error-messages="errors"
+                        :success="valid"
+                      ></v-text-field>
+                    </ValidationProvider>
                   </v-col>
-                </div>
+                  <v-col cols="12">
+                    <ValidationProvider
+                      :name="`${index}_questionAnswer`"
+                      rules="required|integer"
+                      v-slot="{ errors, valid }"
+                    >
+                      <v-select
+                        v-model.number="question.answer"
+                        :items="
+                          question.options.map(i => {
+                            return i.value;
+                          })
+                        "
+                        item-text="title"
+                        item-value="value"
+                        label="Answer"
+                        :error-messages="errors"
+                        :success="valid"
+                      ></v-select>
+                    </ValidationProvider>
+                  </v-col>
+                  <div
+                    class="ml-8"
+                    v-for="(option, index1) in question.options"
+                    :key="index1"
+                  >
+                    <v-col cols="12">
+                      <span class="font-weight-bold">
+                        Option {{ index1 }}:
+                      </span>
+                      <v-btn
+                        color="primary"
+                        @click="removeSurveyQsOp({ index, index1 })"
+                        small
+                      >
+                        Remove
+                      </v-btn>
+                    </v-col>
+                    <v-col cols="12">
+                      <ValidationProvider
+                        :name="`${index}_optionTitle_${index1}`"
+                        rules="required"
+                        v-slot="{ errors, valid }"
+                      >
+                        <v-text-field
+                          :value="option.title"
+                          @input="
+                            e =>
+                              updateSurveyQsOp({
+                                title: 'title',
+                                value: e,
+                                qIndex: index,
+                                oIndex: index1
+                              })
+                          "
+                          label="Title"
+                          :error-messages="errors"
+                          :success="valid"
+                        ></v-text-field>
+                      </ValidationProvider>
+                    </v-col>
+                    <v-col cols="12">
+                      <ValidationProvider
+                        :name="`${index}_optionValue_${index1}`"
+                        rules="required|integer|min_value:1"
+                        v-slot="{ errors, valid }"
+                      >
+                        <v-text-field
+                          :value="option.value"
+                          @input="
+                            e =>
+                              updateSurveyQsOp({
+                                title: 'value',
+                                value: !isNaN(Number(e)) ? Number(e) : e,
+                                qIndex: index,
+                                oIndex: index1
+                              })
+                          "
+                          label="Value"
+                          :error-messages="errors"
+                          :success="valid"
+                        ></v-text-field>
+                      </ValidationProvider>
+                    </v-col>
+                  </div>
+                  <v-card-actions>
+                    <v-btn color="primary" small @click="addSurveyQsOp(index)">
+                      Add option
+                    </v-btn>
+                  </v-card-actions>
+                </v-row>
                 <v-card-actions>
-                  <v-btn color="primary" small @click="addSurveyQsOp(index)">
-                    Add option
+                  <v-spacer></v-spacer>
+                  <v-btn color="primary" small @click="addSurveyQs">
+                    Add question
                   </v-btn>
                 </v-card-actions>
-              </v-row>
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="primary" small @click="addSurveyQs">
-                  Add question
-                </v-btn>
-              </v-card-actions>
-            </div>
-          </v-container>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text to="/survey">
-            Back
-          </v-btn>
-          <v-btn color="blue darken-1" @click="create">
-            Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
+              </div>
+            </v-container>
+          </v-card-text>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue darken-1" text to="/survey">
+              Back
+            </v-btn>
+            <v-btn
+              color="blue darken-1"
+              @click.prevent="handleSubmit(create)"
+              text
+              >Create</v-btn
+            >
+          </v-card-actions>
+        </v-card>
+      </ValidationObserver>
     </template>
   </div>
 </template>
@@ -247,8 +326,8 @@ export default {
   components: {
     PageTitle
   },
-  created() {
-    this.RESETSURVEY();
+  async created() {
+    await this.RESETSURVEY();
   },
   methods: {
     ...mapSurveyMutations(["RESETSURVEY"]),
