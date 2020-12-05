@@ -11,8 +11,11 @@ const state = () => ({
   loggedIn: false
 });
 const actions = {
-  logout({ commit }) {
+  async logout({ commit }) {
     commit("CLEAR_USER_DATA");
+    if (router.currentRoute.path !== "/login") {
+      await router.push("/login");
+    }
   },
   async login({ commit }, params) {
     let response = await AuthRepository.login(params);

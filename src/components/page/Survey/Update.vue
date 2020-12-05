@@ -122,29 +122,19 @@
               <div class="ml-4">
                 <v-row v-for="(question, index) in surveyQs" :key="index">
                   <v-col cols="12">
-                    <span class="font-weight-bold"> Quest {{ index }}: </span>
+                    <span class="font-weight-bold">
+                      Quest {{ index + 1 }}:
+                    </span>
                     <v-btn color="primary" @click="removeSurveyQs(index)" small>
                       Remove
                     </v-btn>
                   </v-col>
                   <v-col cols="12">
-                    <ValidationProvider
-                      mode="lazy"
-                      :name="`${index}_questionNumber`"
-                      :rules="
-                        `required|integer|unique:${surveyQs.map(i => {
-                          return i.number;
-                        })}|min_value:0`
-                      "
-                      v-slot="{ errors, valid }"
-                    >
-                      <v-text-field
-                        :error-messages="errors"
-                        :success="valid"
-                        v-model.number="question.number"
-                        label="Number"
-                      ></v-text-field>
-                    </ValidationProvider>
+                    <v-text-field
+                      v-show="false"
+                      :value="(question.number = index + 1)"
+                      label="Number"
+                    ></v-text-field>
                   </v-col>
                   <v-col cols="12">
                     <ValidationProvider
@@ -161,35 +151,13 @@
                       ></v-text-field>
                     </ValidationProvider>
                   </v-col>
-                  <v-col cols="12">
-                    <ValidationProvider
-                      mode="lazy"
-                      :name="`${index}_questionAnswer`"
-                      rules="required|integer"
-                      v-slot="{ errors, valid }"
-                    >
-                      <v-select
-                        v-model.number="question.answer"
-                        :items="
-                          question.options.map(i => {
-                            return i.value;
-                          })
-                        "
-                        item-value="value"
-                        label="Answer"
-                        :error-messages="errors"
-                        :success="valid"
-                      ></v-select>
-                    </ValidationProvider>
-                  </v-col>
                   <div
-                    class="ml-8"
                     v-for="(option, index1) in question.options"
                     :key="index1"
                   >
                     <v-col cols="12">
                       <span class="font-weight-bold">
-                        Option {{ index1 }}:
+                        Option {{ index1 + 1 }}:
                       </span>
                       <v-btn
                         color="primary"
@@ -223,40 +191,46 @@
                         ></v-text-field>
                       </ValidationProvider>
                     </v-col>
-                    <v-col cols="12">
-                      <ValidationProvider
-                        mode="lazy"
-                        :name="`${index}_optionValue_${index1}`"
-                        :rules="
-                          `required|integer|unique:${question.options.map(i => {
-                            return i.value;
-                          })}|min_value:0`
-                        "
-                        v-slot="{ errors, valid }"
-                      >
-                        <v-text-field
-                          :value="option.value"
-                          @input="
-                            e =>
-                              updateSurveyQsOp({
-                                title: 'value',
-                                value: !isNaN(Number(e)) ? Number(e) : e,
-                                qIndex: index,
-                                oIndex: index1
-                              })
-                          "
-                          label="Value"
-                          :error-messages="errors"
-                          :success="valid"
-                        ></v-text-field>
-                      </ValidationProvider>
-                    </v-col>
+                    <v-text-field
+                      v-show="false"
+                      :value="
+                        updateSurveyQsOp({
+                          title: 'value',
+                          value: Number(index1) + 1,
+                          qIndex: index,
+                          oIndex: index1
+                        })
+                      "
+                      label="Value"
+                    ></v-text-field>
                   </div>
                   <v-card-actions>
                     <v-btn color="primary" small @click="addSurveyQsOp(index)">
                       Add option
                     </v-btn>
                   </v-card-actions>
+                  <v-col cols="12">
+                    <ValidationProvider
+                      mode="lazy"
+                      :name="`${index}_questionAnswer`"
+                      rules="required|integer"
+                      v-slot="{ errors, valid }"
+                    >
+                      <v-select
+                        v-model.number="question.answer"
+                        :items="
+                          question.options.map(i => {
+                            return { value: i.value, title: i.title };
+                          })
+                        "
+                        item-value="value"
+                        item-text="title"
+                        label="Answer"
+                        :error-messages="errors"
+                        :success="valid"
+                      ></v-select>
+                    </ValidationProvider>
+                  </v-col>
                 </v-row>
                 <v-card-actions>
                   <v-spacer></v-spacer>
