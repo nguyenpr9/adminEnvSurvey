@@ -2,12 +2,12 @@ version: '3.7'
 services:
   vuecli:
     container_name: vuecli
-#    restart: always
+    restart: always
     build:
       context: .
-      dockerfile: Dockerfile-prod
+      dockerfile: Dockerfile-dev
     env_file: .env
     volumes:
       - ./:/app
     ports:
-      - '9999:8080'
+      - '6600:8080'
