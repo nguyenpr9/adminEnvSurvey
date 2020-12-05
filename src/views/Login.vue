@@ -1,24 +1,13 @@
 <template>
   <div id="login">
-    <PasswordReset
-      v-if="showPasswordReset"
-      @close="togglePasswordReset()"
-    ></PasswordReset>
     <section>
       <div class="col1">
-        <h1>Vuegram</h1>
-        <p>
-          Welcome to the
-          <a href="https://savvyapps.com/" target="_blank">Savvy Apps</a> sample
-          social media web app powered by Vue.js and Firebase. Build this
-          project by checking out The Definitive Guide to Getting Started with
-          Vue.js
-        </p>
+        <h1>EnvSurvey</h1>
       </div>
       <div :class="{ 'signup-form': !showLoginForm }" class="col2">
         <form v-if="showLoginForm" @submit.prevent>
           <h1>Welcome Back</h1>
-          <p v-if="error" class="error-msg">{{ error }}</p>
+          <v-alert type="error" v-if="error">{{ error }}</v-alert>
           <div>
             <label for="username1">Tên đăng nhập</label>
             <input
@@ -39,13 +28,12 @@
           </div>
           <button @click="login()" class="button">Log In</button>
           <div class="extras">
-            <a @click="togglePasswordReset()">Forgot Password</a>
             <a @click="toggleForm()">Create an Account</a>
           </div>
         </form>
         <form v-else @submit.prevent>
           <h1>Get Started</h1>
-          <p v-if="error" class="error-msg">{{ error }}</p>
+          <v-alert type="error" v-if="error">{{ error }}</v-alert>
           <div>
             <label for="name">Họ và tên</label>
             <input
@@ -93,18 +81,13 @@
 </template>
 
 <script>
-import PasswordReset from "@/components/PasswordReset";
 import { auth, mapAuthField } from "../store/modules/auth";
 import store from "@/store";
 if (!store.state.auth) store.registerModule(`auth`, auth);
 export default {
   name: "Login",
-  components: {
-    PasswordReset
-  },
   data() {
     return {
-      showPasswordReset: false,
       showLoginForm: true,
       loginForm: {
         username: "",
@@ -140,10 +123,6 @@ export default {
     },
     toggleForm() {
       this.showLoginForm = !this.showLoginForm;
-      this.error = null;
-    },
-    togglePasswordReset() {
-      this.showPasswordReset = !this.showPasswordReset;
       this.error = null;
     }
   }

@@ -1,5 +1,6 @@
 <template>
   <v-card>
+    <v-alert type="success" v-if="success">{{ success }}</v-alert>
     <page-title
       :heading="heading"
       :subheading="subheading"
@@ -84,7 +85,7 @@ import { createNamespacedHelpers } from "vuex";
 // import { ToggleButton } from "vue-js-toggle-button";
 import PageTitle from "../../Layout/Components/PageTitle.vue";
 import store from "../../store";
-import { user } from "../../store/modules/user";
+import { user, mapUserField } from "../../store/modules/user";
 import { DELETE } from "../../store/action-types";
 const { mapActions } = createNamespacedHelpers(`user`);
 
@@ -120,6 +121,7 @@ export default {
     };
   },
   computed: {
+    ...mapUserField([`success`]),
     formTitle() {
       return this.editedIndex === -1 ? "New User" : "Edit User";
     },
