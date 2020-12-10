@@ -34,12 +34,12 @@
                     rules="required"
                     v-slot="{ errors, valid }"
                   >
-                    <v-text-field
+                    <v-textarea
                       :error-messages="errors"
                       :success="valid"
                       v-model="description"
                       label="Description"
-                    ></v-text-field>
+                    ></v-textarea>
                   </ValidationProvider>
                 </v-col>
                 <v-col cols="12">
@@ -125,17 +125,12 @@
                     <span class="font-weight-bold">
                       Quest {{ index + 1 }}:
                     </span>
-                    <v-btn color="primary" @click="removeSurveyQs(index)" small>
-                      Remove
-                    </v-btn>
                   </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      v-show="false"
-                      :value="(question.number = index + 1)"
-                      label="Number"
-                    ></v-text-field>
-                  </v-col>
+                  <v-text-field
+                    v-show="false"
+                    :value="(question.number = index + 1)"
+                    label="Number"
+                  ></v-text-field>
                   <v-col cols="12">
                     <ValidationProvider
                       mode="lazy"
@@ -159,13 +154,6 @@
                       <span class="font-weight-bold">
                         Option {{ index1 + 1 }}:
                       </span>
-                      <v-btn
-                        color="primary"
-                        @click="removeSurveyQsOp({ index, index1 })"
-                        small
-                      >
-                        Remove
-                      </v-btn>
                     </v-col>
                     <v-col cols="12">
                       <ValidationProvider
@@ -204,11 +192,6 @@
                       label="Value"
                     ></v-text-field>
                   </div>
-                  <v-card-actions>
-                    <v-btn color="primary" small @click="addSurveyQsOp(index)">
-                      Add option
-                    </v-btn>
-                  </v-card-actions>
                   <v-col cols="12">
                     <ValidationProvider
                       mode="lazy"
@@ -232,12 +215,6 @@
                     </ValidationProvider>
                   </v-col>
                 </v-row>
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn color="primary" small @click="addSurveyQs">
-                    Add question
-                  </v-btn>
-                </v-card-actions>
               </div>
             </v-container>
           </v-card-text>
@@ -265,12 +242,6 @@ import moment from "moment";
 import PageTitle from "../../../Layout/Components/PageTitle.vue";
 import { createNamespacedHelpers } from "vuex";
 import { UPDATE, ONE } from "../../../store/action-types";
-import {
-  ADD_CHILD_ROW,
-  ADD_ROW,
-  REMOVE_CHILD_ROW,
-  REMOVE_ROW
-} from "../../../store/mutation-types";
 import store from "../../../store";
 import {
   survey,
@@ -304,7 +275,7 @@ export default {
   },
   async created() {
     await this.one(this.$route.params.id);
-    this.endDate = moment(this.enDate).format("YYYY-MM-DD");
+    this.endDate = moment(this.endDate).format("YYYY-MM-DD");
     this.startDate = moment(this.startDate).format("YYYY-MM-DD");
   },
   components: {
@@ -312,10 +283,6 @@ export default {
   },
   methods: {
     ...mapSurveyQsMutations({
-      addSurveyQs: ADD_ROW,
-      addSurveyQsOp: ADD_CHILD_ROW,
-      removeSurveyQs: REMOVE_ROW,
-      removeSurveyQsOp: REMOVE_CHILD_ROW,
       updateSurveyQsOp: `updateOptions`
     }),
     ...mapSurveyActions({

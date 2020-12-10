@@ -2,8 +2,7 @@
   <div :class="headerbg" class="app-header header-shadow">
     <div class="logo-src" />
     <div class="app-header__content">
-      <div class="app-header-right">
-      </div>
+      <div class="app-header-right"></div>
     </div>
     <div class="app-header__mobile-menu">
       <div>

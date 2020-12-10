@@ -1,4 +1,11 @@
-import { required, email, max_value, min_value,max, integer } from "vee-validate/dist/rules";
+import {
+  required,
+  email,
+  max_value,
+  min_value,
+  max,
+  integer
+} from "vee-validate/dist/rules";
 import { extend } from "vee-validate";
 
 extend("required", {

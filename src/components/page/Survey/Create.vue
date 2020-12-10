@@ -34,12 +34,12 @@
                     rules="required"
                     v-slot="{ errors, valid }"
                   >
-                    <v-text-field
+                    <v-textarea
                       :error-messages="errors"
                       :success="valid"
                       v-model="description"
                       label="Description"
-                    ></v-text-field>
+                    ></v-textarea>
                   </ValidationProvider>
                 </v-col>
                 <v-col cols="12">
@@ -129,13 +129,11 @@
                       Remove
                     </v-btn>
                   </v-col>
-                  <v-col cols="12">
-                    <v-text-field
-                      v-show="false"
-                      :value="(question.number = index + 1)"
-                      label="Number"
-                    ></v-text-field>
-                  </v-col>
+                  <v-text-field
+                    v-show="false"
+                    :value="(question.number = index + 1)"
+                    label="Number"
+                  ></v-text-field>
                   <v-col cols="12">
                     <ValidationProvider
                       mode="lazy"

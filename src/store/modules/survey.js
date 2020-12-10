@@ -109,10 +109,12 @@ export const { mapMultiRowFields: mapSurveyQsMultiRowFields } = createHelpers({
   getterType: `survey/surveyQs/getField`,
   mutationType: `survey/surveyQs/updateField`
 });
-export const { mapMultiRowFields: mapSurveyQsOpMultiRowFields } = createHelpers({
-  getterType: `survey/surveyQsOp/getField`,
-  mutationType: `survey/surveyQsOp/updateField`
-});
+export const { mapMultiRowFields: mapSurveyQsOpMultiRowFields } = createHelpers(
+  {
+    getterType: `survey/surveyQsOp/getField`,
+    mutationType: `survey/surveyQsOp/updateField`
+  }
+);
 
 const getters = {
   getField
