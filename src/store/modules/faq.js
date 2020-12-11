@@ -19,7 +19,7 @@ const actions = {
   async [ALL]({ commit }) {
     commit("setIsBusy", true);
     const response = await FaqRepository.getAll();
-    if (response.status) {
+    if (response.status === true) {
       commit("fetchData", response.data);
     } else {
       commit(ERROR, response.message);
@@ -29,7 +29,7 @@ const actions = {
   async [ONE]({ commit }, id) {
     commit("setIsBusy", true);
     const response = await FaqRepository.getOne(id);
-    if (response.status) {
+    if (response.status === true) {
       commit("SETFAQ", response.data);
     } else {
       commit(ERROR, response.message);
@@ -41,7 +41,8 @@ const actions = {
       faq: state.faq
     });
     let response = await FaqRepository.create(faqData);
-    if (response.status) {
+    if (response.status === true) {
+      commit(SUCCESS, "Create faq successfully");
       await router.push("/faq");
     } else {
       commit(ERROR, response.message);
@@ -49,7 +50,8 @@ const actions = {
   },
   async [UPDATE]({ commit, state }) {
     let response = await FaqRepository.update(state.faq);
-    if (response.status) {
+    if (response.status === true) {
+      commit(SUCCESS, "Update faq successfully");
       await router.push("/faq");
     } else {
       commit(ERROR, response.message);
@@ -57,10 +59,10 @@ const actions = {
   },
   async [DELETE]({ commit }, id) {
     let response = await FaqRepository.delete(id);
-    if (response.status) {
-      commit(SUCCESS, response.message);
+    if (response.status === true) {
+      commit(SUCCESS, "Delete user successfully");
     } else {
-      commit(ERROR, response.message);
+      commit(SUCCESS, "Delete user failed");
     }
   }
 };
@@ -87,12 +89,20 @@ const mutations = {
     state.error = error;
     // eslint-disable-next-line no-param-reassign
     state.success = false;
+
+    setTimeout(() => {
+      state.error = false;
+    }, 1200);
   },
-  [SUCCESS](state) {
+  [SUCCESS](state, error) {
     // eslint-disable-next-line no-param-reassign
     state.error = false;
     // eslint-disable-next-line no-param-reassign
-    state.success = true;
+    state.success = error;
+
+    setTimeout(() => {
+      state.success = false;
+    }, 2000);
   }
 };
 

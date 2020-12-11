@@ -18,7 +18,7 @@ const actions = {
   async [ONE]({ commit }, id) {
     commit("setIsBusy", true);
     const response = await SurveyRepository.getOne(id);
-    if (response.status) {
+    if (response.status === true) {
       commit("SETSURVEY", response.data);
     } else {
       commit(ERROR, response.message);
@@ -28,7 +28,7 @@ const actions = {
   async [ALL]({ commit }) {
     commit("setIsBusy", true);
     const response = await SurveyRepository.getAll();
-    if (response.status) {
+    if (response.status === true) {
       commit("fetchData", response.data);
     } else {
       commit(ERROR, response.message);
@@ -43,9 +43,9 @@ const actions = {
       },
       { surveyQs: state.surveyQs.rows }
     );
-    console.log(surveyData);
     let response = await SurveyRepository.create(surveyData);
     if (response.status === true) {
+      commit(SUCCESS, "Create survey successfully");
       await router.push("/survey");
     } else {
       commit(ERROR, response.message);
@@ -53,7 +53,8 @@ const actions = {
   },
   async [UPDATE]({ commit, state }) {
     let response = await SurveyRepository.update(state.survey);
-    if (response.status) {
+    if (response.status === true) {
+      commit(SUCCESS, "Update survey successfully");
       await router.push("/survey");
     } else {
       commit(ERROR, response.message);
@@ -68,12 +69,20 @@ const mutations = {
     state.error = error;
     // eslint-disable-next-line no-param-reassign
     state.success = false;
+
+    setTimeout(() => {
+      state.error = false;
+    }, 1200);
   },
-  [SUCCESS](state) {
+  [SUCCESS](state, error) {
     // eslint-disable-next-line no-param-reassign
     state.error = false;
     // eslint-disable-next-line no-param-reassign
-    state.success = true;
+    state.success = error;
+
+    setTimeout(() => {
+      state.success = false;
+    }, 2000);
   },
   setIsBusy(state, status) {
     state.isBusy = status;

@@ -6,7 +6,7 @@
       :icon="icon"
     ></page-title>
     <h1></h1>
-    <p v-if="error" class="text-center error">{{ error }}</p>
+    <v-alert type="error" v-if="error">{{ error }}</v-alert>
     <template>
       <ValidationObserver ref="obs">
         <v-card>

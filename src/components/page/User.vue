@@ -1,6 +1,7 @@
 <template>
   <v-card>
     <v-alert type="success" v-if="success">{{ success }}</v-alert>
+    <v-alert type="error" v-if="error">{{ error }}</v-alert>
     <page-title
       :heading="heading"
       :subheading="subheading"
@@ -49,7 +50,7 @@
         <!--        />-->
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small @click="deleteItem(item)">
+        <v-icon v-show="item.status" small @click="deleteItem(item)">
           mdi-delete
         </v-icon>
       </template>
@@ -121,7 +122,7 @@ export default {
     };
   },
   computed: {
-    ...mapUserField([`success`]),
+    ...mapUserField([`success`, `error`]),
     formTitle() {
       return this.editedIndex === -1 ? "New User" : "Edit User";
     },

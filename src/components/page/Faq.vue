@@ -1,5 +1,7 @@
 <template>
   <v-card>
+    <v-alert type="success" v-if="success">{{ success }}</v-alert>
+    <v-alert type="error" v-if="error">{{ error }}</v-alert>
     <page-title
       :heading="heading"
       :subheading="subheading"
@@ -40,10 +42,15 @@
         </v-chip>
       </template>
       <template v-slot:item.actions="{ item }">
-        <v-icon small @click="deleteItem(item)">
+        <v-icon v-show="item.status" small @click="deleteItem(item)">
           mdi-delete
         </v-icon>
-        <v-btn small icon :to="{ name: 'UpdateFaq', params: { id: item.id } }">
+        <v-btn
+          v-show="item.status"
+          small
+          icon
+          :to="{ name: 'UpdateFaq', params: { id: item.id } }"
+        >
           <v-icon small>
             mdi-pencil
           </v-icon>
@@ -80,7 +87,7 @@
 import { createNamespacedHelpers } from "vuex";
 import PageTitle from "../../Layout/Components/PageTitle.vue";
 import store from "../../store";
-import { faq } from "../../store/modules/faq";
+import { faq, mapFaqField } from "../../store/modules/faq";
 import { DELETE, ALL } from "../../store/action-types";
 const { mapActions } = createNamespacedHelpers(`faq`);
 
@@ -115,6 +122,7 @@ export default {
     };
   },
   computed: {
+    ...mapFaqField([`success`, `error`]),
     formTitle() {
       return this.editedIndex === -1 ? "New Faq" : "Edit Faq";
     },

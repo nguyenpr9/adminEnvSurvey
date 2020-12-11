@@ -38,6 +38,15 @@ const routes = [
     }
   },
   {
+    path: "/logout",
+    name: "Logout",
+    component: () => import("../views/Logout.vue"),
+    meta: {
+      layout: BLANK,
+      middleware: [authMiddle]
+    }
+  },
+  {
     path: "/user",
     component: () => import("../Layout/Components/Blank.vue"),
     meta: {

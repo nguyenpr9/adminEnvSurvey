@@ -6,7 +6,6 @@
     @mouseleave="toggleSidebarHover('remove', 'closed-sidebar-open')"
   >
     <div class="app-header__logo">
-      <div class="logo-src"></div>
       <div class="header__pane ml-auto">
         <button
           type="button"
@@ -48,26 +47,21 @@ export default {
           title: "ENVSURVEY"
         },
         {
-          title: "General",
           icon: "pe-7s-rocket",
-          child: [
-            {
-              href: "/",
-              title: "HomePage"
-            },
-            {
-              href: "/user",
-              title: "User"
-            },
-            {
-              href: "/faq",
-              title: "Faq"
-            },
-            {
-              href: "/survey",
-              title: "Survey"
-            }
-          ]
+          href: "/",
+          title: "HomePage"
+        },
+        {
+          href: "/user",
+          title: "User"
+        },
+        {
+          href: "/faq",
+          title: "Faq"
+        },
+        {
+          href: "/survey",
+          title: "Survey"
         }
       ],
       collapsed: true,

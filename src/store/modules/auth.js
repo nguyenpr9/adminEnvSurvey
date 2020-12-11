@@ -19,7 +19,7 @@ const actions = {
   },
   async login({ commit }, params) {
     let response = await AuthRepository.login(params);
-    if (response.status) {
+    if (response.status === true) {
       commit("SAVE_USER_INFO", response);
       await router.push("/");
     } else {
@@ -29,7 +29,7 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   async register({ commit }, params) {
     let response = await AuthRepository.register(params);
-    if (response.status) {
+    if (response.status === true) {
       commit("SAVE_USER_INFO", response);
       await router.push("/");
     } else {

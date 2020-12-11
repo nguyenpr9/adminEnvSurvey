@@ -1,5 +1,7 @@
 <template>
   <v-card>
+    <v-alert type="success" v-if="success">{{ success }}</v-alert>
+    <v-alert type="error" v-if="error">{{ error }}</v-alert>
     <page-title
       :heading="heading"
       :subheading="subheading"
@@ -50,6 +52,7 @@
       </template>
       <template v-slot:item.actions="{ item }">
         <v-btn
+          v-show="item.status"
           small
           icon
           :to="{ name: 'UpdateSurvey', params: { id: item.id } }"
@@ -76,7 +79,7 @@ import moment from "moment";
 import { createNamespacedHelpers } from "vuex";
 import PageTitle from "../../Layout/Components/PageTitle.vue";
 import store from "../../store";
-import { survey } from "../../store/modules/survey";
+import { survey, mapSurveyField } from "../../store/modules/survey";
 import { ALL } from "../../store/action-types";
 const { mapActions } = createNamespacedHelpers(`survey`);
 
@@ -113,6 +116,7 @@ export default {
     };
   },
   computed: {
+    ...mapSurveyField([`success`, `error`]),
     formTitle() {
       return this.editedIndex === -1 ? "New Survey" : "Edit Survey";
     },

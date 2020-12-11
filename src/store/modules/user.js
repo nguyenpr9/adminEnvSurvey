@@ -21,7 +21,7 @@ const actions = {
   async fetchUsers({ commit }, params) {
     commit("setIsBusy", true);
     const response = await UserRepository.getAll();
-    if (response.status) {
+    if (response.status === true) {
       commit("fetchData", response.data);
     } else {
       commit(ERROR, response.message);
@@ -33,7 +33,8 @@ const actions = {
       user: state.user
     });
     let response = await AuthRepository.register(userData);
-    if (response.status) {
+    if (response.status === true) {
+      commit(SUCCESS, "Create user successfully");
       await router.push("/user");
     } else {
       commit(ERROR, response.message);
@@ -41,10 +42,10 @@ const actions = {
   },
   async [DELETE]({ commit }, id) {
     let response = await UserRepository.delete(id);
-    if (response.status) {
-      commit(SUCCESS, response.message);
+    if (response.status === true) {
+      commit(SUCCESS, "Delete user successfully");
     } else {
-      commit(ERROR, response.message);
+      commit(SUCCESS, "Delete user failed");
     }
   },
   async changeStatusUsers({ commit, state }, params) {
@@ -77,12 +78,20 @@ const mutations = {
     state.error = error;
     // eslint-disable-next-line no-param-reassign
     state.success = false;
+
+    setTimeout(() => {
+      state.error = false;
+    }, 1200);
   },
-  [SUCCESS](state) {
+  [SUCCESS](state, error) {
     // eslint-disable-next-line no-param-reassign
     state.error = false;
     // eslint-disable-next-line no-param-reassign
-    state.success = true;
+    state.success = error;
+
+    setTimeout(() => {
+      state.success = false;
+    }, 2000);
   }
 };
 
