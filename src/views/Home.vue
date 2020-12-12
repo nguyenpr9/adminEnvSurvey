@@ -19,7 +19,7 @@
               <i class="lnr-laptop-phone text-dark opacity-8"></i>
             </div>
             <div class="widget-chart-content">
-              <div class="widget-subheading">User</div>
+              <div class="widget-subheading">Total Users</div>
               <div class="widget-numbers">
                 {{ statisticDashboard.userCount }}
               </div>
@@ -36,7 +36,7 @@
               <i class="lnr-graduation-hat text-white"></i>
             </div>
             <div class="widget-chart-content">
-              <div class="widget-subheading">Survey</div>
+              <div class="widget-subheading">Total Surveys</div>
               <div class="widget-numbers">
                 <span>{{ statisticDashboard.surveyCount }}</span>
               </div>
@@ -54,7 +54,7 @@
             </div>
             <div class="widget-chart-content">
               <div class="widget-subheading">
-                Số lượt người dùng làm khảo sát
+                Total participants
               </div>
               <div class="widget-numbers text-success">
                 <span>{{ statisticDashboard.surveyResultCount }}</span>
@@ -71,7 +71,7 @@
           class="card-header-title font-size-lg text-capitalize font-weight-normal"
         >
           <i class="header-icon lnr-charts icon-gradient bg-happy-green"> </i>
-          User Survey Count
+          Survey's participants
         </div>
       </div>
       <div class="no-gutters row">
