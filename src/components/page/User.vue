@@ -49,6 +49,9 @@
         <!--          @change="updateStatusItem(item.id, $event.value)"-->
         <!--        />-->
       </template>
+      <template v-slot:item.dateOfJoining="{ item }">
+        {{ formatDate(item.dateOfJoining) }}
+      </template>
       <template v-slot:item.actions="{ item }">
         <v-icon v-show="item.status" small @click="deleteItem(item)">
           mdi-delete
@@ -83,6 +86,7 @@
 
 <script>
 import { createNamespacedHelpers } from "vuex";
+import moment from "moment";
 // import { ToggleButton } from "vue-js-toggle-button";
 import PageTitle from "../../Layout/Components/PageTitle.vue";
 import store from "../../store";
@@ -116,6 +120,11 @@ export default {
           text: "Email"
         },
         { value: "name", text: "Full name" },
+        { value: "class", text: "Class" },
+        { value: "rollNumber", text: "RollNumber" },
+        { value: "section", text: "Section" },
+        { value: "specification", text: "Specification" },
+        { value: "dateOfJoining", text: "DateOfJoining" },
         { value: "status", text: "Status" },
         { value: "actions", text: "Action", sortable: false }
       ]
@@ -158,7 +167,9 @@ export default {
       this.editedIndex = item.id;
       this.dialogDelete = true;
     },
-
+    formatDate(val) {
+      return moment(val).format("YYYY-MM-DD");
+    },
     async deleteItemConfirm() {
       await this.delete(this.editedIndex);
       await this.$store.dispatch("user/fetchUsers");

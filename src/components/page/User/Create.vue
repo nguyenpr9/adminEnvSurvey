@@ -63,6 +63,70 @@
                     ></v-text-field>
                   </ValidationProvider>
                 </v-col>
+                <v-col cols="12">
+                  <ValidationProvider
+                    mode="lazy"
+                    name="Class"
+                    rules="required"
+                    v-slot="{ errors, valid }"
+                  >
+                    <v-text-field
+                      v-model="_class"
+                      :error-messages="errors"
+                      :success="valid"
+                      label="Class"
+                      required
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12">
+                  <ValidationProvider
+                    mode="lazy"
+                    name="RollNumber"
+                    rules="required"
+                    v-slot="{ errors, valid }"
+                  >
+                    <v-text-field
+                      v-model="rollNumber"
+                      :error-messages="errors"
+                      :success="valid"
+                      label="RollNumber"
+                      required
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12">
+                  <ValidationProvider
+                    mode="lazy"
+                    name="Section"
+                    rules="required"
+                    v-slot="{ errors, valid }"
+                  >
+                    <v-text-field
+                      v-model="section"
+                      :error-messages="errors"
+                      :success="valid"
+                      label="Section"
+                      required
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
+                <v-col cols="12">
+                  <ValidationProvider
+                    mode="lazy"
+                    name="Specification"
+                    rules="required"
+                    v-slot="{ errors, valid }"
+                  >
+                    <v-text-field
+                      v-model="specification"
+                      :error-messages="errors"
+                      :success="valid"
+                      label="Specification"
+                      required
+                    ></v-text-field>
+                  </ValidationProvider>
+                </v-col>
               </v-row>
             </v-container>
           </v-card-text>
@@ -117,7 +181,18 @@ export default {
   },
   computed: {
     ...mapState([`error`, `success`]),
-    ...mapUserField([`user.username`, `user.email`, `user.name`])
+    ...mapUserField([
+      `user.username`,
+      `user.email`,
+      `user.class`,
+      `user.rollNumber`,
+      `user.section`,
+      `user.specification`,
+      `user.name`
+    ]),
+    ...mapUserField({
+      _class: `user._class`
+    })
   }
 };
 </script>

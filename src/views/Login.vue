@@ -83,6 +83,7 @@
 <script>
 import { auth, mapAuthField } from "../store/modules/auth";
 import store from "@/store";
+import moment from "moment";
 if (!store.state.auth) store.registerModule(`auth`, auth);
 export default {
   name: "Login",
@@ -117,6 +118,7 @@ export default {
         username: this.registerForm.username,
         password: this.registerForm.password,
         email: this.registerForm.email,
+        dateOfJoining: moment().format("YYYY-MM-DD"),
         userRole: "Admin",
         status: 1
       });

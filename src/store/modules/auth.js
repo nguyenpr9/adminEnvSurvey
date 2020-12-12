@@ -27,11 +27,14 @@ const actions = {
     }
   },
   // eslint-disable-next-line no-unused-vars
-  async register({ commit }, params) {
+  async register({ commit, dispatch }, params) {
     let response = await AuthRepository.register(params);
     if (response.status === true) {
       commit("SAVE_USER_INFO", response);
-      await router.push("/");
+      await dispatch("login", {
+        username: params.username,
+        password: params.password
+      });
     } else {
       commit(ERROR, response.message);
     }
@@ -58,12 +61,20 @@ const mutations = {
     state.error = error;
     // eslint-disable-next-line no-param-reassign
     state.success = false;
+
+    setTimeout(() => {
+      state.error = false;
+    }, 1200);
   },
-  [SUCCESS](state) {
+  [SUCCESS](state, error) {
     // eslint-disable-next-line no-param-reassign
     state.error = false;
     // eslint-disable-next-line no-param-reassign
-    state.success = true;
+    state.success = error;
+
+    setTimeout(() => {
+      state.success = false;
+    }, 2000);
   },
   SAVE_USER_INFO(state, payload) {
     state.user = payload.data;
